@@ -3,25 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dynamic Quote Generator</title>
+  <title>Dynamic Quote Generator with Filter</title>
 </head>
 <body>
   <h1>Dynamic Quote Generator</h1>
 
-  <div id="quoteDisplay" style="margin-bottom:20px; font-size:18px; font-style:italic;"></div>
+  <!-- Category Filter Dropdown -->
+  <label for="categoryFilter">Filter by Category:</label>
+  <select id="categoryFilter" onchange="filterQuotes()">
+    <option value="all">All Categories</option>
+  </select>
 
-  <button id="newQuote">Show New Quote</button>
-  <button id="showLastQuote">Show Last Viewed Quote</button>
+  <!-- Quotes Display -->
+  <div id="quoteDisplay"></div>
 
-  <hr>
-
-  <!-- Dynamic form will be created by JS -->
-  
-  <hr>
-
-  <!-- JSON Import/Export Controls -->
-  <button id="exportQuotes">Export Quotes (JSON)</button>
-  <input type="file" id="importFile" accept=".json" />
+  <!-- Add New Quote -->
+  <h2>Add a New Quote</h2>
+  <input type="text" id="quoteText" placeholder="Enter quote" />
+  <input type="text" id="quoteCategory" placeholder="Enter category" />
+  <button onclick="addQuote()">Add Quote</button>
 
   <script src="script.js"></script>
 </body>
