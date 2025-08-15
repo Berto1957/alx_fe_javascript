@@ -137,12 +137,38 @@ function importFromJsonFile(event) {
       saveQuotes();
       populateCategories();
       filterQuotes();
-      alert("Quotes imported successfully!");
+      showNotification("Quotes imported successfully!");
     } catch {
-      alert("Error parsing JSON file.");
+      showNotification("Error parsing JSON file.", 5000);
     }
   };
   fileReader.readAsText(event.target.files[0]);
+}
+
+// -------------------- UI Notification --------------------
+function showNotification(message, duration = 3000) {
+  let notification = document.getElementById("notification");
+  if (!notification) {
+    notification = document.createElement("div");
+    notification.id = "notification";
+    notification.style = `
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: #4caf50;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      display: none;
+      z-index: 1000;
+    `;
+    document.body.appendChild(notification);
+  }
+  notification.textContent = message;
+  notification.style.display = "block";
+  setTimeout(() => {
+    notification.style.display = "none";
+  }, duration);
 }
 
 // -------------------- Server Sync & Conflict Resolution --------------------
@@ -169,10 +195,11 @@ async function fetchQuotesFromServer() {
       saveQuotes();
       populateCategories();
       filterQuotes();
-      alert("Quotes updated from server. Conflicts resolved.");
+      showNotification("Quotes synced with server!"); // ✅ Required message
     }
   } catch (error) {
     console.error("Error fetching server quotes:", error);
+    showNotification("Failed to sync with server.", 5000);
   }
 }
 
@@ -188,7 +215,7 @@ async function syncNewQuoteToServer(quote) {
   }
 }
 
-// Wrapper function for syncing (for checklist)
+// Wrapper for checklist
 async function syncQuotes() {
   await fetchQuotesFromServer();
 }
