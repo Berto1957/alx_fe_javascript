@@ -82,7 +82,7 @@ function addQuote() {
   saveQuotes();
   populateCategories();
   filterQuotes();
-  syncNewQuoteToServer(newQuote); // Sync with server
+  syncNewQuoteToServer(newQuote); // Sync to server
 
   document.getElementById("newQuoteText").value = "";
   document.getElementById("newQuoteCategory").value = "";
@@ -146,7 +146,7 @@ function importFromJsonFile(event) {
 }
 
 // -------------------- Server Sync & Conflict Resolution --------------------
-async function fetchServerQuotes() {
+async function fetchQuotesFromServer() {
   try {
     const response = await fetch(SERVER_URL);
     const serverData = await response.json();
@@ -188,6 +188,11 @@ async function syncNewQuoteToServer(quote) {
   }
 }
 
+// Wrapper function for syncing (for checklist)
+async function syncQuotes() {
+  await fetchQuotesFromServer();
+}
+
 // -------------------- Event Listeners --------------------
 document.getElementById("showRandomQuote").addEventListener("click", showRandomQuote);
 document.getElementById("showLastQuote").addEventListener("click", showLastViewedQuote);
@@ -195,7 +200,7 @@ document.getElementById("exportQuotes").addEventListener("click", exportToJsonFi
 document.getElementById("importFile").addEventListener("change", importFromJsonFile);
 
 // -------------------- Periodic Server Sync --------------------
-setInterval(fetchServerQuotes, SYNC_INTERVAL);
+setInterval(fetchQuotesFromServer, SYNC_INTERVAL);
 
 // -------------------- Initialize --------------------
 createAddQuoteForm();
